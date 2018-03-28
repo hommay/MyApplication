@@ -1,67 +1,61 @@
 package com.example.homma.myapplication;
 
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, PageFragment.OnFragmentInteractionListener
-{
-    private static final String[] pageTitle = {"NEW!", "イベントを探す", "お気に入り", "マイページ"};
+public class MainActivity extends AppCompatActivity {
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setViews();
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    private void setViews() {
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbar.setTitle("EVENT's");
         setSupportActionBar(toolbar);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        FragmentManager manager = getSupportFragmentManager();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        MainFragmentPagerAdapter adapter = new MainFragmentPagerAdapter(manager);
+        viewPager.setAdapter(adapter);
 
-        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
-        {
-            @Override
-            public Fragment getItem(int position)
-            {
-                return PageFragment.newInstance(position + 1);
-            }
+        setDrawer();
 
-            @Override
-            public CharSequence getPageTitle(int position)
-            {
-                return pageTitle[position];
-            }
-
-            @Override
-            public int getCount()
-            {
-                return pageTitle.length;
-            }
-        };
-
-        viewPager.setAdapter(fragmentPagerAdapter);
-        viewPager.addOnPageChangeListener(this);
-
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab);
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+    private void setDrawer() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.main_drawer_navigation);
 
-    @Override
-    public void onPageSelected(int position) {}
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
 
-    @Override
-    public void onPageScrollStateChanged(int state) {}
+        navigationView.setNavigationItemSelectedListener(select);
+    }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {}
+    private NavigationView.OnNavigationItemSelectedListener select = new NavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(MenuItem item) {
+            //本来ならここで分岐の処理を
+            drawerLayout.closeDrawers();
+            return true;
+        }
+    };
 }
