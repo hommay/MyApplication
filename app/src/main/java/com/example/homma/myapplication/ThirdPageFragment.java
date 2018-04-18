@@ -33,7 +33,6 @@ public class ThirdPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.thirdfragment, null);
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.fragment_main_linearlayout);
-        linearLayout.setBackgroundResource(getArguments().getInt(BACKGROUND_COLOR));
 
         return view;
     }

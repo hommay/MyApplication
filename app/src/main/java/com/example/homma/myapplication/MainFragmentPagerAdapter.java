@@ -17,13 +17,17 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return FirstPageFragment.newInstance(android.R.color.holo_blue_bright);
+                FirstPageFragment firstPageFragment = new FirstPageFragment();
+                return firstPageFragment;
             case 1:
-                return SecondPageFragment.newInstance(android.R.color.holo_green_light);
+                SecondPageFragment secondPageFragment = new SecondPageFragment();
+                return secondPageFragment;
             case 2:
-                return ThirdPageFragment.newInstance(android.R.color.holo_red_dark);
+                ThirdPageFragment thirdPageFragment = new ThirdPageFragment();
+                return thirdPageFragment;
             case 3:
-                return FourthPageFragment.newInstance(android.R.color.holo_orange_light);
+                FourthPageFragment fourthPageFragment = new FourthPageFragment();
+                return fourthPageFragment;
         }
         return null;
     }
